@@ -1,0 +1,41 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+@theme {
+  --color-risk-low: #16a34a;
+  --color-risk-medium: #d97706;
+  --color-risk-high: #dc2626;
+  --color-risk-unknown: #71717a;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+}
+
+/* Fix: Tailwind's preflight sets img { max-width: 100%; height: auto },
+   which breaks Leaflet's 256x256 tile images. Leaflet needs full control
+   over tile sizing — this restores it without disabling Tailwind's preflight
+   globally. */
+.leaflet-container img {
+  max-width: none !important;
+  height: auto;
+}
+
+.leaflet-container {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  z-index: 0;
+}
+
+/* Move zoom controls to bottom-right, Google-Maps style, so they don't
+   clash with the floating search card top-left or legend bottom-left */
+.leaflet-top.leaflet-left {
+  top: auto;
+  bottom: 90px;
+  left: auto;
+  right: 12px;
+}

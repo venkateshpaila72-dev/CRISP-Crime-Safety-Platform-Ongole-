@@ -1,0 +1,30 @@
+name: Daily Ongole Crime Scrape
+
+on:
+  schedule:
+    - cron: "30 1 * * *"  # 7:00 AM IST daily
+  workflow_dispatch:  # allows manual trigger from GitHub Actions tab
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd ongole_safemap_backend
+          pip install -r requirements.txt
+
+      - name: Run scraper
+        env:
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
+          MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+        run: |
+          cd ongole_safemap_backend
+          python -m app.scraper.daily_update
